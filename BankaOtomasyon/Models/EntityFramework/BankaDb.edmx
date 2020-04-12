@@ -1,0 +1,422 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BankaDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bakiye">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Bakiye" Type="smallmoney" Nullable="false" />
+          <Property Name="SonBakiyeHesaplanmaTarihi" Type="smalldatetime" />
+          <Property Name="HesapId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HareketTipleri">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HareketTipi" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Hesap">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HesapBaslangic" Type="smalldatetime" />
+          <Property Name="HesapBitis" Type="smalldatetime" />
+          <Property Name="KullaniciId" Type="int" Nullable="false" />
+          <Property Name="HesapAdi" Type="nvarchar" MaxLength="50" />
+          <Property Name="Bakiye" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="HesapTip" Type="int" />
+        </EntityType>
+        <EntityType Name="HesapHareketleri">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TipiId" Type="int" Nullable="false" />
+          <Property Name="Tutari" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Aciklama" Type="nvarchar" MaxLength="50" />
+          <Property Name="KaynakID" Type="int" Nullable="false" />
+          <Property Name="Tarih" Type="smalldatetime" Nullable="false" />
+          <Property Name="HedefHesapId" Type="int" />
+        </EntityType>
+        <EntityType Name="Kullanici">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ad" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Soyad" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TcKimlik" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="CepNo" Type="bigint" Nullable="false" />
+          <Property Name="EvNo" Type="smallint" />
+          <Property Name="Adres" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DogumTarihi" Type="smalldatetime" />
+          <Property Name="KullaniciTipi" Type="int" Nullable="false" />
+          <Property Name="Sifre" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="KullaniciTipleri">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KullaniciTipAdi" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Bakiye_Hesap">
+          <End Role="Hesap" Type="Self.Hesap" Multiplicity="1" />
+          <End Role="Bakiye" Type="Self.Bakiye" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hesap">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bakiye">
+              <PropertyRef Name="HesapId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Hesap_Kullanici">
+          <End Role="Kullanici" Type="Self.Kullanici" Multiplicity="1" />
+          <End Role="Hesap" Type="Self.Hesap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullanici">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Hesap">
+              <PropertyRef Name="KullaniciId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HesapHareketleri_HareketTipleri">
+          <End Role="HareketTipleri" Type="Self.HareketTipleri" Multiplicity="1" />
+          <End Role="HesapHareketleri" Type="Self.HesapHareketleri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HareketTipleri">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HesapHareketleri">
+              <PropertyRef Name="TipiId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HesapHareketleri_Hesap">
+          <End Role="Hesap" Type="Self.Hesap" Multiplicity="1" />
+          <End Role="HesapHareketleri" Type="Self.HesapHareketleri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hesap">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HesapHareketleri">
+              <PropertyRef Name="KaynakID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kullanici_KullaniciTipleri">
+          <End Role="KullaniciTipleri" Type="Self.KullaniciTipleri" Multiplicity="1" />
+          <End Role="Kullanici" Type="Self.Kullanici" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KullaniciTipleri">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Kullanici">
+              <PropertyRef Name="KullaniciTipi" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BankaDBModelStoreContainer">
+          <EntitySet Name="Bakiye" EntityType="Self.Bakiye" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HareketTipleri" EntityType="Self.HareketTipleri" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hesap" EntityType="Self.Hesap" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HesapHareketleri" EntityType="Self.HesapHareketleri" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kullanici" EntityType="Self.Kullanici" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KullaniciTipleri" EntityType="Self.KullaniciTipleri" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Bakiye_Hesap" Association="Self.FK_Bakiye_Hesap">
+            <End Role="Hesap" EntitySet="Hesap" />
+            <End Role="Bakiye" EntitySet="Bakiye" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Hesap_Kullanici" Association="Self.FK_Hesap_Kullanici">
+            <End Role="Kullanici" EntitySet="Kullanici" />
+            <End Role="Hesap" EntitySet="Hesap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HesapHareketleri_HareketTipleri" Association="Self.FK_HesapHareketleri_HareketTipleri">
+            <End Role="HareketTipleri" EntitySet="HareketTipleri" />
+            <End Role="HesapHareketleri" EntitySet="HesapHareketleri" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HesapHareketleri_Hesap" Association="Self.FK_HesapHareketleri_Hesap">
+            <End Role="Hesap" EntitySet="Hesap" />
+            <End Role="HesapHareketleri" EntitySet="HesapHareketleri" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kullanici_KullaniciTipleri" Association="Self.FK_Kullanici_KullaniciTipleri">
+            <End Role="KullaniciTipleri" EntitySet="KullaniciTipleri" />
+            <End Role="Kullanici" EntitySet="Kullanici" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BankaDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BankaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bakiyes" EntityType="BankaDBModel.Bakiye" />
+          <EntitySet Name="HareketTipleris" EntityType="BankaDBModel.HareketTipleri" />
+          <EntitySet Name="Kullanicis" EntityType="BankaDBModel.Kullanici" />
+          <EntitySet Name="KullaniciTipleris" EntityType="BankaDBModel.KullaniciTipleri" />
+          <AssociationSet Name="FK_Kullanici_KullaniciTipleri" Association="BankaDBModel.FK_Kullanici_KullaniciTipleri">
+            <End Role="KullaniciTipleri" EntitySet="KullaniciTipleris" />
+            <End Role="Kullanici" EntitySet="Kullanicis" />
+          </AssociationSet>
+          <EntitySet Name="Hesaps" EntityType="BankaDBModel.Hesap" />
+          <EntitySet Name="HesapHareketleris" EntityType="BankaDBModel.HesapHareketleri" />
+          <AssociationSet Name="FK_Bakiye_Hesap" Association="BankaDBModel.FK_Bakiye_Hesap">
+            <End Role="Hesap" EntitySet="Hesaps" />
+            <End Role="Bakiye" EntitySet="Bakiyes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HesapHareketleri_HareketTipleri" Association="BankaDBModel.FK_HesapHareketleri_HareketTipleri">
+            <End Role="HareketTipleri" EntitySet="HareketTipleris" />
+            <End Role="HesapHareketleri" EntitySet="HesapHareketleris" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Hesap_Kullanici" Association="BankaDBModel.FK_Hesap_Kullanici">
+            <End Role="Kullanici" EntitySet="Kullanicis" />
+            <End Role="Hesap" EntitySet="Hesaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HesapHareketleri_Hesap" Association="BankaDBModel.FK_HesapHareketleri_Hesap">
+            <End Role="Hesap" EntitySet="Hesaps" />
+            <End Role="HesapHareketleri" EntitySet="HesapHareketleris" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Bakiye">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Bakiye1" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="SonBakiyeHesaplanmaTarihi" Type="DateTime" Precision="0" />
+          <Property Name="HesapId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Hesap" Relationship="BankaDBModel.FK_Bakiye_Hesap" FromRole="Bakiye" ToRole="Hesap" />
+        </EntityType>
+        <EntityType Name="HareketTipleri">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HareketTipi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="HesapHareketleris" Relationship="BankaDBModel.FK_HesapHareketleri_HareketTipleri" FromRole="HareketTipleri" ToRole="HesapHareketleri" />
+        </EntityType>
+        <EntityType Name="Kullanici">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Soyad" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TcKimlik" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="CepNo" Type="Int64" Nullable="false" />
+          <Property Name="EvNo" Type="Int16" />
+          <Property Name="Adres" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DogumTarihi" Type="DateTime" Precision="0" />
+          <Property Name="KullaniciTipi" Type="Int32" Nullable="false" />
+          <Property Name="Sifre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="KullaniciTipleri" Relationship="BankaDBModel.FK_Kullanici_KullaniciTipleri" FromRole="Kullanici" ToRole="KullaniciTipleri" />
+          <NavigationProperty Name="Hesaps" Relationship="BankaDBModel.FK_Hesap_Kullanici" FromRole="Kullanici" ToRole="Hesap" />
+        </EntityType>
+        <EntityType Name="KullaniciTipleri">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KullaniciTipAdi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Kullanicis" Relationship="BankaDBModel.FK_Kullanici_KullaniciTipleri" FromRole="KullaniciTipleri" ToRole="Kullanici" />
+        </EntityType>
+        <Association Name="FK_Kullanici_KullaniciTipleri">
+          <End Type="BankaDBModel.KullaniciTipleri" Role="KullaniciTipleri" Multiplicity="1" />
+          <End Type="BankaDBModel.Kullanici" Role="Kullanici" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KullaniciTipleri">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Kullanici">
+              <PropertyRef Name="KullaniciTipi" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Hesap">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HesapBaslangic" Type="DateTime" Precision="0" />
+          <Property Name="HesapBitis" Type="DateTime" Precision="0" />
+          <Property Name="KullaniciId" Type="Int32" Nullable="false" />
+          <Property Name="HesapAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Bakiye" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="HesapTip" Type="Int32" />
+          <NavigationProperty Name="Bakiyes" Relationship="BankaDBModel.FK_Bakiye_Hesap" FromRole="Hesap" ToRole="Bakiye" />
+          <NavigationProperty Name="Kullanici" Relationship="BankaDBModel.FK_Hesap_Kullanici" FromRole="Hesap" ToRole="Kullanici" />
+          <NavigationProperty Name="HesapHareketleris" Relationship="BankaDBModel.FK_HesapHareketleri_Hesap" FromRole="Hesap" ToRole="HesapHareketleri" />
+        </EntityType>
+        <EntityType Name="HesapHareketleri">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TipiId" Type="Int32" Nullable="false" />
+          <Property Name="Tutari" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Aciklama" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KaynakID" Type="Int32" Nullable="false" />
+          <Property Name="Tarih" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HedefHesapId" Type="Int32" />
+          <NavigationProperty Name="HareketTipleri" Relationship="BankaDBModel.FK_HesapHareketleri_HareketTipleri" FromRole="HesapHareketleri" ToRole="HareketTipleri" />
+          <NavigationProperty Name="Hesap" Relationship="BankaDBModel.FK_HesapHareketleri_Hesap" FromRole="HesapHareketleri" ToRole="Hesap" />
+        </EntityType>
+        <Association Name="FK_Bakiye_Hesap">
+          <End Type="BankaDBModel.Hesap" Role="Hesap" Multiplicity="1" />
+          <End Type="BankaDBModel.Bakiye" Role="Bakiye" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hesap">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bakiye">
+              <PropertyRef Name="HesapId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HesapHareketleri_HareketTipleri">
+          <End Type="BankaDBModel.HareketTipleri" Role="HareketTipleri" Multiplicity="1" />
+          <End Type="BankaDBModel.HesapHareketleri" Role="HesapHareketleri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HareketTipleri">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HesapHareketleri">
+              <PropertyRef Name="TipiId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Hesap_Kullanici">
+          <End Type="BankaDBModel.Kullanici" Role="Kullanici" Multiplicity="1" />
+          <End Type="BankaDBModel.Hesap" Role="Hesap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullanici">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Hesap">
+              <PropertyRef Name="KullaniciId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HesapHareketleri_Hesap">
+          <End Type="BankaDBModel.Hesap" Role="Hesap" Multiplicity="1" />
+          <End Type="BankaDBModel.HesapHareketleri" Role="HesapHareketleri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hesap">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HesapHareketleri">
+              <PropertyRef Name="KaynakID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BankaDBModelStoreContainer" CdmEntityContainer="BankaEntities">
+          <EntitySetMapping Name="Bakiyes">
+            <EntityTypeMapping TypeName="BankaDBModel.Bakiye">
+              <MappingFragment StoreEntitySet="Bakiye">
+                <ScalarProperty Name="HesapId" ColumnName="HesapId" />
+                <ScalarProperty Name="SonBakiyeHesaplanmaTarihi" ColumnName="SonBakiyeHesaplanmaTarihi" />
+                <ScalarProperty Name="Bakiye1" ColumnName="Bakiye" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HareketTipleris">
+            <EntityTypeMapping TypeName="BankaDBModel.HareketTipleri">
+              <MappingFragment StoreEntitySet="HareketTipleri">
+                <ScalarProperty Name="HareketTipi" ColumnName="HareketTipi" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kullanicis">
+            <EntityTypeMapping TypeName="BankaDBModel.Kullanici">
+              <MappingFragment StoreEntitySet="Kullanici">
+                <ScalarProperty Name="Sifre" ColumnName="Sifre" />
+                <ScalarProperty Name="KullaniciTipi" ColumnName="KullaniciTipi" />
+                <ScalarProperty Name="DogumTarihi" ColumnName="DogumTarihi" />
+                <ScalarProperty Name="Adres" ColumnName="Adres" />
+                <ScalarProperty Name="EvNo" ColumnName="EvNo" />
+                <ScalarProperty Name="CepNo" ColumnName="CepNo" />
+                <ScalarProperty Name="TcKimlik" ColumnName="TcKimlik" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Soyad" ColumnName="Soyad" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KullaniciTipleris">
+            <EntityTypeMapping TypeName="BankaDBModel.KullaniciTipleri">
+              <MappingFragment StoreEntitySet="KullaniciTipleri">
+                <ScalarProperty Name="KullaniciTipAdi" ColumnName="KullaniciTipAdi" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hesaps">
+            <EntityTypeMapping TypeName="BankaDBModel.Hesap">
+              <MappingFragment StoreEntitySet="Hesap">
+                <ScalarProperty Name="HesapTip" ColumnName="HesapTip" />
+                <ScalarProperty Name="Bakiye" ColumnName="Bakiye" />
+                <ScalarProperty Name="HesapAdi" ColumnName="HesapAdi" />
+                <ScalarProperty Name="KullaniciId" ColumnName="KullaniciId" />
+                <ScalarProperty Name="HesapBitis" ColumnName="HesapBitis" />
+                <ScalarProperty Name="HesapBaslangic" ColumnName="HesapBaslangic" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HesapHareketleris">
+            <EntityTypeMapping TypeName="BankaDBModel.HesapHareketleri">
+              <MappingFragment StoreEntitySet="HesapHareketleri">
+                <ScalarProperty Name="HedefHesapId" ColumnName="HedefHesapId" />
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="KaynakID" ColumnName="KaynakID" />
+                <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
+                <ScalarProperty Name="Tutari" ColumnName="Tutari" />
+                <ScalarProperty Name="TipiId" ColumnName="TipiId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

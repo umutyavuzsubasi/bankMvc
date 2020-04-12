@@ -1,0 +1,37 @@
+﻿@model BankaOtomasyon.ViewModels.HesapKontrolViewModel
+@{
+    ViewBag.Title = "Yeni";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Yeni</h2>
+
+@using (Html.BeginForm("Kayit", "Hesap", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(m => m.Hesap.HesapAdi))
+        @Html.TextBoxFor(m => m.Hesap.HesapAdi, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Hesap.HesapBaslangic)
+        @Html.TextBoxFor(m => m.Hesap.HesapBaslangic, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Hesap.HesapBitis)
+        @Html.TextBoxFor(m => m.Hesap.HesapBitis, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Hesap.KullaniciId)
+        @Html.DropDownListFor(m => m.Hesap.KullaniciId, new SelectList(Model.Kullanici, "Id", "AdSoyad"), "Hesap Sahibini Seç", new { @class = "form-control" })
+    </div>
+    @*<div class="form-group">
+        @Html.LabelFor(m => m.Hesap.Bakiye)
+        @Html.TextBoxFor(m=>m.Hesap.Bakiye, new { @class = "form-control" })
+    </div>*@
+
+
+    @Html.HiddenFor(m=>m.Hesap.Id)
+    <button type="submit" class="btn btn-default">Kaydet</button>
+}
+

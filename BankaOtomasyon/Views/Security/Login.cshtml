@@ -1,0 +1,35 @@
+﻿@model BankaOtomasyon.Models.EntityFramework.Kullanici
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+
+    <div class="container">
+        <h2>Lütfen giriş yapınız</h2>
+        @ViewBag.Mesaj
+        @using (Html.BeginForm("Login","Security",FormMethod.Post ))
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.TcKimlik)
+                @Html.TextBoxFor(m => m.TcKimlik, new { @class = "form-control", placeholder = "Tc Kimlik No" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Sifre)
+                @Html.PasswordFor(m => m.Sifre, new { @class = "form-control", placeholder = "Parola" })
+            </div>
+            <button type="submit" class="btn btn-block btn-success">Giriş Yap</button> 
+        }
+
+
+    </div>
+</body>
+</html>

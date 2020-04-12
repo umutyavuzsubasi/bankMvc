@@ -1,0 +1,32 @@
+﻿@model BankaOtomasyon.ViewModels.HesapKontrolViewModel
+@{
+    ViewBag.Title = "Gonder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Gönder</h2>
+
+@using (Html.BeginForm("Gonder", "Hesap", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(m => m.Hesap.Id)
+        @Html.TextBoxFor(m => m.Hesap.Id, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Hesap.GonderilecekId)
+        @Html.TextBoxFor(m => m.Hesap.GonderilecekId, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Hesap.GonderilicekPara)
+        @Html.TextBoxFor(m => m.Hesap.GonderilicekPara, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.HareketTipId)
+        @Html.DropDownListFor(m => m.HareketTipId, new SelectList(Model.HareketTipleri, "Id", "HareketTipi"), "Hareket Tipi Seçiniz", new { @class = "form-control" })
+    </div>
+
+
+    @Html.HiddenFor(m => m.Hesap.Id)
+    <button type="submit" class="btn btn-default">Kaydet</button>
+}

@@ -1,0 +1,41 @@
+﻿@using BankaOtomasyon.Models.EntityFramework
+@model List<Kullanici>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Profilim</h2>
+
+
+
+
+<table class="table table-bordered" id="TblKullanicilar">
+    <thead>
+        <tr>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>E mail</th>
+            <th>Cep No</th>
+            <th>Ev No</th>
+            <th>Adres</th>
+            <th>Doğum Tarihi</th>
+            <th>Güncelle</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Kullanici in Model)
+        {
+            <tr>
+                <td>@Kullanici.Ad</td>
+                <td>@Kullanici.Soyad</td>
+                <td>@Kullanici.Email</td>
+                <td>@Kullanici.CepNo</td>
+                <td>@Kullanici.EvNo</td>
+                <td>@Kullanici.Adres</td>
+                <td>@Kullanici.DogumTarihi.Value.ToString("dd-MM-yyyy")</td>
+                <td>@Html.ActionLink("Güncelle", "Guncelle", new { id = Kullanici.Id }, new { @class = "btn btn-success" })</td>
+            </tr>
+        }
+    </tbody>
+</table>

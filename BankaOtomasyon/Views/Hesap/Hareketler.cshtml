@@ -1,0 +1,34 @@
+﻿@using BankaOtomasyon.Models.EntityFramework
+@model List<HesapHareketleri>
+@{
+    ViewBag.Title = "Hareketler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Hareketler</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Hesap No</th>
+            <th>İşlem Tarihi</th>
+            <th>İşlem Türü</th>
+            <th>Açıklama</th>
+            <th>Bakiye</th>
+            <th>Gönderilen Hesap</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Hareket in Model)
+            {
+            <tr>
+                <td>@Hareket.KaynakID</td>
+                <td>@Hareket.Tarih</td>
+                <td>@Hareket.TipiId</td>
+                <td>@Hareket.Aciklama</td>
+                <td>@Hareket.Tutari</td>
+                <td>@Hareket.HedefHesapId</td>
+            </tr>
+        }
+    </tbody>
+</table>

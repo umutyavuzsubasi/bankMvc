@@ -1,0 +1,42 @@
+﻿@using BankaOtomasyon.Models.EntityFramework
+@model List<Hesap>
+
+@{
+    ViewBag.Title = "Hesap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Yeni Hesap", "Yeni", null, new { @class = "btn btn-success" })
+<h2>Hesabım</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Hesap Id</th>
+            <th>Hesap Adı</th>
+            <th>Hesap Başlangıç</th>
+            <th>Hesap Bitiş</th>
+            <th>Bakiye</th>
+            <th>Para Gönder</th>
+            <th>Hesap Hareketleri</th>
+            <th>Güncelle</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Hesap in Model)
+            {
+            <tr>
+                <td>@Hesap.Id</td>
+                <td>@Hesap.HesapAdi</td>
+                <td>@Hesap.HesapBaslangic</td>
+                <td>@Hesap.HesapBitis</td>
+                <td>@Hesap.Bakiye</td>
+                <td>@Html.ActionLink("Para Gönder", "Gonder", new { id = Hesap.Id }, new { @class = "btn btn-success" })</td>
+                <td>@Html.ActionLink("Hesap Hareketleri", "Hareketler", new { id = Hesap.Id }, new { @class = "btn btn-primary" })</td>
+                <td>@Html.ActionLink("Güncelle", "Guncelle", new { id = Hesap.Id }, new { @class = "btn btn-warning" })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

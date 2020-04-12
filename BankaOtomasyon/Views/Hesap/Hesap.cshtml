@@ -1,0 +1,47 @@
+﻿@using BankaOtomasyon.Models.EntityFramework
+@model List<Hesap>
+
+    @{
+        ViewBag.Title = "Hesap";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+@Html.ActionLink("Yeni Hesap", "Yeni", null, new { @class = "btn btn-success" })
+    <h2>Hesabım</h2>
+@Html.ActionLink("Aylık Hareketlerim", "HareketMiktari", new { id = Model.FirstOrDefault().KullaniciId }, new { @class = "btn btn-primary" })
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Hesap No</th>
+                <th>Hesap Adı</th>
+                <th>Hesap Başlangıç</th>
+                <th>Hesap Bitiş</th>
+                <th>Bakiye</th>
+                <th>Para Gönder</th>
+                <th>Hesap Hareketleri</th>
+                @if (User.IsInRole("1") || User.IsInRole("2"))
+                {
+                    <th>Güncelle</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Hesap in Model)
+            {
+                <tr>
+                    <td>@Hesap.Id</td>
+                    <td>@Hesap.HesapAdi</td>
+                    <td>@Hesap.HesapBaslangic</td>
+                    <td>@Hesap.HesapBitis</td>
+                    <td>@Hesap.Bakiye</td>
+                    <td>@Html.ActionLink("Para Gönder", "Gonder", new { id = Hesap.Id }, new { @class = "btn btn-success" })</td>
+                    <td>@Html.ActionLink("Hesap Hareketleri", "Hareketler", new { id = Hesap.Id }, new { @class = "btn btn-primary" })</td>
+                     @if (User.IsInRole("1") || User.IsInRole("2"))
+                     {
+                        <td>@Html.ActionLink("Güncelle", "Guncelle", new { id = Hesap.Id }, new { @class = "btn btn-warning" })</td>
+                     }             
+                </tr>
+            }
+        </tbody>
+    </table>
+

@@ -1,0 +1,52 @@
+﻿@model BankaOtomasyon.ViewModels.KullaniciFormViewModel
+@{
+    ViewBag.Title = "Guncelle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Guncelle</h2>
+
+
+@using (Html.BeginForm("Profilim", "Profilim", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(m => m.Kullanici.Ad)
+        @Html.TextBoxFor(m => m.Kullanici.Ad, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Kullanici.Soyad)
+        @Html.TextBoxFor(m => m.Kullanici.Soyad, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Kullanici.Email)
+        @Html.TextBoxFor(m => m.Kullanici.Email, new { @class = "form-control" })
+    </div>
+
+        @Html.HiddenFor(m => m.Kullanici.TcKimlik)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Kullanici.CepNo)
+        @Html.TextBoxFor(m => m.Kullanici.CepNo, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Kullanici.EvNo)
+        @Html.TextBoxFor(m => m.Kullanici.EvNo, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Kullanici.Adres)
+        @Html.TextBoxFor(m => m.Kullanici.Adres, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Kullanici.DogumTarihi)
+        @Html.TextBoxFor(m => m.Kullanici.DogumTarihi, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+    </div>
+        @Html.HiddenFor(m => m.Kullanici.KullaniciTipi)
+    <div class="form-group">
+        @Html.LabelFor(m => m.Kullanici.Sifre)
+        @Html.TextBoxFor(m => m.Kullanici.Sifre, new { @class = "form-control" })
+    </div>
+
+    @Html.HiddenFor(m => m.Kullanici.Id)
+    <button type="submit" class="btn btn-default">Kaydet</button>
+}
